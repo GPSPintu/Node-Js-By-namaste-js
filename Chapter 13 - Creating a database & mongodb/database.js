@@ -1,27 +1,39 @@
-// ✅ Import the MongoDB client
+// ✅ 1. Import MongoClient from mongodb package
+// This line brings the MongoClient class from the 'mongodb' library.
+// MongoClient helps us connect to MongoDB and perform operations.
 const { MongoClient } = require("mongodb");
 
-// ✅ MongoDB Atlas connection URI
-const url = "mongodb+srv://GpsNamasteNodejs:5A5tdC2CwsMY9K61@cluster0.fnth3af.mongodb.net/";
+// ✅ 2. Your MongoDB connection link (URI)
+// This is your connection string from MongoDB Atlas.
+// It includes your username, password, and cluster address.
+const url = "mongodb+srv://Namastevdev:1wAIChozbleEa9Uv@namastenode.blddkgp.mongodb.net/";
 
-// ✅ Create a new MongoClient instance
+// ✅ 3. Create a MongoClient instance using the connection URL
+// This creates a new MongoDB client we’ll use to talk to the database.
 const client = new MongoClient(url);
 
-// ✅ Define the database name
+// ✅ 4. Define the database name you want to use or create
+// If it doesn’t exist, MongoDB will create it automatically.
 const dbName = 'HelloWorld';
 
+// ✅ 5. Define an async function to use "await" (for async operations)
 async function main() {
-  // ✅ 1. Connect to the MongoDB server
+
+  // ✅ 6. Connect to MongoDB server (Atlas)
+  // This actually connects your app to your MongoDB cluster online.
   await client.connect();
   console.log("✅ Connected successfully to server");
 
-  // ✅ 2. Select the database and collection
-  const db = client.db(dbName);
-  const collection = db.collection("User");
+  // ✅ 7. Select your database and collection
+  // Think of a "database" as a folder and a "collection" as a table.
+  const db = client.db(dbName);              // Connect to the HelloWorld database
+  const collection = db.collection("User");  // Choose or create a "User" collection (like a table)
 
   // --------------------------------------
-  // 🔹 3. CREATE: Insert a document
+  // 🔹 8. CREATE: Insert documents (add data)
   // --------------------------------------
+
+  // First user data
   const data = {
     firstname: "Palak",
     lastname: "Pintu",
@@ -29,91 +41,88 @@ async function main() {
     mobile: "9876543210",
   };
 
-  
+  // Insert the first user into MongoDB
   const insertResult = await collection.insertOne(data);
   console.log("📥 Inserted document =>", insertResult);
 
- const data2 = {
+  // Second user data
+  const data2 = {
     firstname: "Khushi",
     lastname: "Pintu",
     city: "Kolkata",
     mobile: "9876543210",
   };
 
+  // Insert second user
   const insertResult2 = await collection.insertOne(data2);
   console.log("📥 Inserted document 2 =>", insertResult2);
 
+  // Third user data
+  const data3 = {
+    firstname: "PalakK",
+    lastname: "PintuU",
+    city: "KolkatAa",
+    mobile: "9876543210",
+  };
 
-  
-
-
-  
-  // 📌 Output: Shows `acknowledged: true` and `insertedId`
+  // Insert third user
+  const insertResult3 = await collection.insertOne(data3);
+  console.log("📥 Inserted document 3 =>", insertResult3);
 
   // --------------------------------------
-  // 🔹 4. READ: Find all documents
+  // 🔹 9. READ: Get (find) all documents
   // --------------------------------------
   const findResult = await collection.find({}).toArray();
   console.log("📄 Found documents =>", findResult);
-  // 📌 Output: Array of all documents in the "User" collection
+  // `{}` means no filter → get *everything*
 
   // --------------------------------------
-  // 🔹 5. READ with Filter: firstname = "Palak"
+  // 🔹 10. READ with Filter: firstname = "Palak"
   // --------------------------------------
   const filteredResult = await collection.find({ firstname: "Palak" }).toArray();
   console.log("🔍 Documents with firstname 'Palak' =>", filteredResult);
-  // 📌 Output: Array of documents with firstname 'Palak'
+  // This finds all documents where firstname is "Palak"
 
   // --------------------------------------
-  // 🔹 6. COUNT: Total number of documents
+  // 🔹 11. COUNT: Total number of documents
   // --------------------------------------
   const countResult = await collection.countDocuments();
   console.log("🔢 Total documents count =>", countResult);
-  // 📌 Output: Total number of documents in collection
+  // Counts how many total documents exist in the "User" collection
 
   // --------------------------------------
-  // 🔹 7. UPDATE: Update a document
+  // 🔹 12. UPDATE: Change a document
   // --------------------------------------
   const updateResult = await collection.updateOne(
-    { firstname: "Palak" },              // Filter condition
-    { $set: { city: "Mumbai" } }         // Update operation
+    { firstname: "Palak" },     // Find the document where firstname is Palak
+    { $set: { city: "Mumbai" } } // Change "city" value to "Mumbai"
   );
   console.log("🔁 Updated document =>", updateResult);
-  // 📌 Output: Shows matchedCount and modifiedCount
 
   // --------------------------------------
-  // 🔹 8. DELETE: Delete a document
+  // 🔹 13. DELETE: Remove a document
   // --------------------------------------
   const deleteResult = await collection.deleteOne(
-    { firstname: "Palak" }               // Filter condition
+    { firstname: "Palak" }       // Delete document where firstname is Palak
   );
   console.log("🗑️ Deleted document =>", deleteResult);
-  // 📌 Output: Shows deletedCount = 1
 
   // --------------------------------------
-  // 🔹 9. READ again with Filter: firstname = "Palak"
-  //    (to confirm deletion)
+  // 🔹 14. READ again: confirm deletion
   // --------------------------------------
   const afterDelete = await collection.find({ firstname: "Palak" }).toArray();
   console.log("📉 After Deletion - Documents with firstname 'Palak' =>", afterDelete);
-  // 📌 Output: Should be an empty array []
+  // Should be an empty array [] if delete worked
 
-  // ✅ Return success message
+  // ✅ 15. Return a success message at the end
   return "🎉 All CRUD operations done!";
 }
 
-// ✅ Call the main function and handle result
+// ✅ 16. Run the main() function
+// .then(console.log) → Prints success message if everything works
+// .catch(console.error) → Prints error if something goes wrong
+// .finally(() => client.close()) → Closes database connection at the end
 main()
   .then(console.log)
   .catch(console.error)
   .finally(() => client.close());
-
-//   ✅ Connected successfully to server
-// 📥 Inserted document => { acknowledged: true, insertedId: ObjectId("...") }
-// 📄 Found documents => [ ... list of all users ... ]
-// 🔍 Documents with firstname 'Palak' => [ { firstname: 'Palak', ... } ]
-// 🔢 Total documents count => 1
-// 🔁 Updated document => { acknowledged: true, matchedCount: 1, modifiedCount: 1 }
-// 🗑️ Deleted document => { acknowledged: true, deletedCount: 1 }
-// 📉 After Deletion - Documents with firstname 'Palak' => []
-// 🎉 All CRUD operations done!
