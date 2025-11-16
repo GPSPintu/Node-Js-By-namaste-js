@@ -259,10 +259,7 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
 | **Authentication** | Uses middleware (`userAuth`) to verify logged-in users.        |
 | **Error Handling** | Consistent error responses with `message` and `success` flags. |
 
----
 
-## 💻 Repository Links
 
-* 🔗 **Code Demonstration:** [Add Demo Link Here]
-* 📦 **Backend Repository:** [Add Repo Link Here]
+
 
