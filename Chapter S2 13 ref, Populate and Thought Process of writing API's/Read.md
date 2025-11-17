@@ -247,8 +247,6 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
 });
 ```
 
----
-
 ## 📚 Summary
 
 | Concept            | Description                                                    |
