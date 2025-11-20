@@ -183,6 +183,4 @@ Pagination supports:
 * Smooth browsing
 * Lower data usage
 
----
-
 
