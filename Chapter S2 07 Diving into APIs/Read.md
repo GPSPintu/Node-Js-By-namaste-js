@@ -78,7 +78,7 @@ When findOne() is used with duplicate email documents in the database, MongoDB w
 Key Points
 Ordering: MongoDB does not guarantee a specific order unless specified with an index. The document returned will typically be the first found, according to the insertion order.
 Best Practice: To avoid duplicates, enforce uniqueness in fields like email by using unique indexes.
-    //user API to find the single user by by email
+    //user API to find the single user by email
     app.get("/user", async (req, res) => {
         //getting user from body
         const userEmail = req.body.emailId;
